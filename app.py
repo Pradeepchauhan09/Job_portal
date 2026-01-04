@@ -15,12 +15,24 @@ app.config['SQLALCHEMY_DATABASE_URI'] = (
     f"mysql+pymysql://{os.getenv('DB_USER')}:{os.getenv('DB_PASSWORD')}@{os.getenv('DB_HOST')}/{os.getenv('DB_NAME')}"
 )
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+SQLALCHEMY_DATABASE_URI = os.environ["DATABASE_URL"]
+SQLALCHEMY_ENGINE_OPTIONS = {
+    "pool_pre_ping": True,
+    "pool_recycle": 280,
+}
+
+
 
 db.init_app(app)
 
 @app.route('/')
 def home():
-    jobs = Job.query.all()
+    try:
+        jobs = Job.query.all()
+    except Exception as e:
+        app.logger.error(e)
+        jobs = []
+
     return render_template('list.html', lists=jobs)
 
 @app.route('/jobs', methods=['GET', 'POST'])
