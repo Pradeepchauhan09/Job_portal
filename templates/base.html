@@ -27,11 +27,11 @@
           <li class="nav-item">
             <a class="nav-link " href="{{ url_for('home') }}">Home</a>
           </li>
-          {% if session.get('admin_id') %}
+          <!-- {% if session.get('admin_id') %} -->
             <li class="nav-item">
             <a class="nav-link" href="{{ url_for('add_job') }}">Post Job</a>
             </li>
-          {% endif %}
+          <!-- {% endif %} -->
           
           <li class="login navbar-nav">
             {% if session.get('user_id') or session.get('admin_id') %}

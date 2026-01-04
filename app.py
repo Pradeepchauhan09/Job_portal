@@ -41,7 +41,7 @@ def home():
 
 @app.route('/jobs', methods=['GET', 'POST'])
 def add_job():
-    if 'admin_id' in session:
+    # if 'admin_id' in session:
         if request.method == 'POST':
             job = Job(
                 title=request.form['jobTitle'],
@@ -55,9 +55,9 @@ def add_job():
             return redirect(url_for('home'))
 
         return render_template('jobs.html')
-    else:
-        flash("you are not admin")
-        return redirect(url_for('home'))
+        # else:
+        # flash("you are not admin")
+        # return redirect(url_for('home'))
 
 @app.route('/apply/<int:job_id>', methods=['POST'])
 def apply_job(job_id):
