@@ -6,6 +6,8 @@ import os
 from database import db
 from models import Job, JobRecruit, User, Admin
 
+
+
 load_dotenv()
 
 app = Flask(__name__)
