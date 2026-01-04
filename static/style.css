@@ -2,7 +2,7 @@
     margin: 0%;
     padding: 0%;
     width: 100%;
-    
+
 }
 .box {
     width: 100%;
@@ -93,9 +93,17 @@
     }
 }
 
+/* Force navbar list to behave like a full-width flex row */
+.navbar-nav {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
 
+/* Push login to extreme right */
 .login {
-    margin-left: 40rem;
+    margin-left: auto !important;
+    margin-right: 1rem;
     font-weight: bold;
     border: 2px solid green;
     border-radius: 20px;
@@ -106,6 +114,7 @@
     height: 2.7rem;
     text-align: center;
 }
+
 
 .login:hover {
     width: 5.2rem;

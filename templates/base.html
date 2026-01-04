@@ -33,7 +33,7 @@
             </li>
           {% endif %}
           
-          <li class="login">
+          <li class="login navbar-nav">
             {% if session.get('user_id') or session.get('admin_id') %}
             <a class="nav-link" href="{{ url_for('logout') }}">
               Logout

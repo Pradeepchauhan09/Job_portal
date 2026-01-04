@@ -2,7 +2,6 @@ from flask import Flask, render_template, request, redirect, url_for, flash, ses
 from dotenv import load_dotenv
 from werkzeug.utils import secure_filename
 import os
-
 from database import db
 from models import Job, JobRecruit, User, Admin
 
@@ -13,6 +12,12 @@ load_dotenv()
 app = Flask(__name__)
 app.secret_key = os.getenv('secret_key')
 
+# app.config['SQLALCHEMY_DATABASE_URI'] = (
+#     f"mysql+pymysql://{os.getenv('DB_USER')}:{os.getenv('DB_PASSWORD')}@{os.getenv('DB_HOST')}/{os.getenv('DB_NAME')}"
+# )
+# app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+
 DATABASE_URL = os.getenv("DATABASE_URL")
 
 if not DATABASE_URL:
@@ -21,10 +26,8 @@ if not DATABASE_URL:
 app.config["SQLALCHEMY_DATABASE_URI"] = DATABASE_URL
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
-
-
-
 db.init_app(app)
+
 
 @app.route('/')
 def home():
@@ -121,19 +124,33 @@ def login():
         email = request.form['email']
         password = request.form['password']
 
+        # ---------------- ADMIN LOGIN ----------------
         if role == 'admin':
+
+            # 1️⃣ Try database admin first
             admin = Admin.query.filter_by(admin_email=email).first()
             if admin and admin.admin_password == password:
                 session['admin_id'] = admin.id
                 return redirect(url_for('home'))
+
+            # 2️⃣ Fallback hardcoded admin (NO SIGNUP)
+            if email == 'admin@gmail.com' and password == 'adminpw':
+                session['admin_id'] = -1  # system admin
+                return redirect(url_for('home'))
+
             flash("Invalid admin credentials")
+            return redirect(url_for('login'))
+
+        # ---------------- USER LOGIN ----------------
         else:
             user = User.query.filter_by(email=email).first()
             if user and user.password == password:
                 session['user_id'] = user.id
                 session['username'] = user.username
                 return redirect(url_for('home'))
+
             flash("Invalid user credentials")
+            return redirect(url_for('login'))
 
     return render_template('login.html')
 
