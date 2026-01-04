@@ -9,7 +9,7 @@ from models import Job, JobRecruit, User, Admin
 load_dotenv()
 
 app = Flask(__name__)
-app.secret_key = "secret-key"
+app.secret_key = os.getenv('secret_key')
 
 app.config['SQLALCHEMY_DATABASE_URI'] = (
     f"mysql+pymysql://{os.getenv('DB_USER')}:{os.getenv('DB_PASSWORD')}@{os.getenv('DB_HOST')}/{os.getenv('DB_NAME')}"
@@ -132,4 +132,4 @@ def logout():
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
-    app.run(debug=True)
+    app.run()
