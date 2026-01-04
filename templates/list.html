@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+
+<div class="title_list">
+    <h2 class="t">Job Listings</h2>
+
+    {% if lists|length == 0 %}
+        <p>No job listings available.</p>
+    {% else %}
+
+        <div class="card-box">
+            {% for job in lists %}
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h5 class="job_title">{{ job.title }}</h5>
+                        <h6 class="text-muted company"><strong>Company:</strong> {{ job.company }} </h6> 
+                        <h6 class="text-muted company"><strong>Location:</strong> {{ job.location }}</h6>
+                        <p class="text-muted company"><strong>Requirement:</strong> {{ job.description }}</p>
+                        <h6 class="text-muted company"><strong>Salary:</strong> {{ job.salary }}</h6>
+                        
+                        <br><br>
+
+                        <!-- APPLY FORM -->
+                        <form action="{{ url_for('apply_job', job_id=job.id) }}"
+                              method="post"
+                              enctype="multipart/form-data">
+
+                            <input type="text"
+                                   name="phone"
+                                   class="form-control mb-2"
+                                   placeholder="Phone number"
+                                   required>
+
+                            <input type="file"
+                                   name="resume"
+                                   class="form-control mb-2"
+                                   accept=".pdf,.doc,.docx"
+                                   required>
+
+                            <button type="submit" class="btn btn-primary">
+                                Apply here
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+    {% endif %}
+</div>
+
+{% endblock %}

@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Signup / Login | Job Portal</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Segoe UI", sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #f5f7fa, #fef6d8);
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1500px;
+      height: 80%;
+      background: white;
+      border-radius: 24px;
+      overflow: hidden;
+      display: flex;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+    }
+
+    .left {
+      width: 45%;
+      padding: 60px;
+      background: linear-gradient(180deg, #ffffff, #fdf4d7);
+    }
+
+    .logo {
+      font-weight: bold;
+      margin-bottom: 40px;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+    }
+
+    .input-group {
+      margin-bottom: 18px;
+    }
+
+    label {
+      font-size: 14px;
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 14px;
+      border-radius: 12px;
+      border: 1px solid #ddd;
+      outline: none;
+      font-size: 15px;
+    }
+
+    .password-wrapper {
+      position: relative;
+    }
+
+    .toggle {
+      position: absolute;
+      right: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      font-size: 13px;
+      color: #888;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 14px;
+      border-radius: 14px;
+      border: none;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 10px;
+      background: #ffd84d;
+      font-weight: bold;
+    }
+
+    .footer {
+      margin-top: 20px;
+      font-size: 13px;
+      text-align: center;
+    }
+      .right {
+      width: 55%;
+      background: url("../static/uploads/dylan-gillis-KdeqA3aTnBY-unsplash.jpg") center/cover no-repeat;
+      position: relative;
+    }
+
+    .overlay {
+      position: absolute;
+      inset: 0;
+       background: rgba(255,255,255,0.15);
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+  <div class="left">
+    <div class="logo">Job Portal</div>
+
+    <h2 id="formTitle">Create an account</h2>
+
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <p style="color:red">{{ messages[0] }}</p>
+      {% endif %}
+    {% endwith %}
+
+    <form id="authForm" method="post" action="/signup">
+
+      <div class="input-group">
+        <label>Login As</label>
+        <select name="role" id="roleSelect" onchange="handleRoleChange()" required>
+          <option value="user">USER</option>
+          <option value="admin">ADMIN</option>
+        </select>
+      </div>
+
+      <div class="input-group" id="usernameGroup">
+        <label>Username</label>
+        <input type="text" name="username">
+      </div>
+
+      <div class="input-group">
+        <label>Email</label>
+        <input type="email" name="email" required>
+      </div>
+
+      <div class="input-group password-wrapper">
+        <label>Password</label>
+        <input type="password" name="password" id="password" required>
+        <span class="toggle" onclick="togglePassword()">Show</span>
+      </div>
+
+      <button class="btn" id="submitBtn">Submit</button>
+    </form>
+
+    <div class="footer" id="footerText">
+      Already have an account?
+      <a href="#" onclick="switchToLogin()">Sign in</a>
+    </div>
+  </div>
+   <div class="right">
+      <div class="overlay"></div>
+    </div>
+</div>
+
+<script>
+  const form = document.getElementById("authForm");
+  const usernameGroup = document.getElementById("usernameGroup");
+  const roleSelect = document.getElementById("roleSelect");
+  const title = document.getElementById("formTitle");
+  const submitBtn = document.getElementById("submitBtn");
+  const footerText = document.getElementById("footerText");
+
+  function handleRoleChange() {
+    if (roleSelect.value === "admin") {
+      form.action = "/login";
+      usernameGroup.style.display = "none";
+      title.innerText = "Admin Login";
+      submitBtn.innerText = "Login";
+      footerText.innerText = "Admins cannot sign up";
+    } else {
+      switchToSignup();
+    }
+  }
+
+  function switchToLogin() {
+    form.action = "/login";
+    usernameGroup.style.display = "none";
+    title.innerText = "Sign in";
+    submitBtn.innerText = "Login";
+    footerText.innerHTML = `
+      Don’t have an account?
+      <a href="#" onclick="switchToSignup()">Sign up</a>
+    `;
+  }
+
+  function switchToSignup() {
+    form.action = "/signup";
+    usernameGroup.style.display = "block";
+    title.innerText = "Create an account";
+    submitBtn.innerText = "Submit";
+    footerText.innerHTML = `
+      Already have an account?
+      <a href="#" onclick="switchToLogin()">Sign in</a>
+    `;
+  }
+
+  function togglePassword() {
+    const pwd = document.getElementById("password");
+    pwd.type = pwd.type === "password" ? "text" : "password";
+  }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Job portal</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="{{url_for('static' , filename='style.css')}}">
+  <style>
+    
+  </style>
+</head>
+
+<body>
+  <div class="box">
+    <nav class="navbar navbar-expand-lg" id="navy">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="{{ url_for('home') }}">JOB PORTAL</a>
+
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link " href="{{ url_for('home') }}">Home</a>
+          </li>
+          {% if session.get('admin_id') %}
+            <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('add_job') }}">Post Job</a>
+            </li>
+          {% endif %}
+          
+          <li class="login">
+            {% if session.get('user_id') or session.get('admin_id') %}
+            <a class="nav-link" href="{{ url_for('logout') }}">
+              Logout
+            </a>
+            {% else %}
+            <a class="nav-link" href="{{ url_for('login') }}">
+              Login
+            </a>
+            {% endif %}
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+    <h1 class="header_t">Job Portal</h1>
+    <img src="../static/uploads/dylan-gillis-KdeqA3aTnBY-unsplash.jpg" alt="">
+</div>
+  
+
+  <!-- FLASH MESSAGE SECTION -->
+  <div class="container mt-3">
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <div class="alert alert-success text-center">
+      {{ messages[0] }}
+    </div>
+    {% endif %}
+    {% endwith %}
+  </div>
+
+  {% block content %}
+  
+  {% endblock %}
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

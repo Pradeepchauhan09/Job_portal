@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h1 class="tup"> 
+    Job form
+</h1>
+<div class="form_cl">
+    <form method="post">
+    <div class="mb-3 inputf">
+        <label class="form-label">Job Title</label>
+        <input type="text" class="form-control" name="jobTitle" required>
+    </div>
+
+    <div class="mb-3 inputf">
+        <label class="form-label">Company</label>
+        <input type="text" class="form-control" name="company" required>
+    </div>
+
+    <div class="mb-3 inputf">
+        <label class="form-label">Location</label>
+        <input type="text" class="form-control" name="location" required>
+    </div>
+
+    <div class="mb-3 inputf">
+        <label class="form-label">Salary</label>
+        <input type="number" class="form-control" name="salary" required>
+    </div>
+
+    <div class="mb-3 inputf">
+        <label class="form-label">Job Description</label>
+        <textarea class="form-control" name="description" required></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary button_">Submit</button>
+</form>
+
+</div>
+
+{% endblock %}
