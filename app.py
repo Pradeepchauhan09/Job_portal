@@ -11,15 +11,14 @@ load_dotenv()
 app = Flask(__name__)
 app.secret_key = os.getenv('secret_key')
 
-app.config['SQLALCHEMY_DATABASE_URI'] = (
-    f"mysql+pymysql://{os.getenv('DB_USER')}:{os.getenv('DB_PASSWORD')}@{os.getenv('DB_HOST')}/{os.getenv('DB_NAME')}"
-)
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-SQLALCHEMY_DATABASE_URI = os.environ["DATABASE_URL"]
-SQLALCHEMY_ENGINE_OPTIONS = {
-    "pool_pre_ping": True,
-    "pool_recycle": 280,
-}
+DATABASE_URL = os.getenv("DATABASE_URL")
+
+if not DATABASE_URL:
+    raise RuntimeError("DATABASE_URL is not set")
+
+app.config["SQLALCHEMY_DATABASE_URI"] = DATABASE_URL
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+
 
 
 
